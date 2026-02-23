@@ -14,19 +14,16 @@ let offsetX = 0;
 let offsetY = 0;
 
 
-//variable for selecting nodes
-let selectedNode = null;
+
+let selectedNodes = [];
+
 
 
 
 function createNode(name) {
     const x = 10 + (node_id % 5) * 160;
     const y = 10 + Math.floor(node_id / 5) * 100;
-    let newFamilyMember = { id: node_id++, name: name, x: x, y: y, connections: [] }
-
-    if (selectedNode) {
-        newFamilyMember.connections.push(selectedNode.id)
-    }
+    let newFamilyMember = { id: node_id++, name: name, x: x, y: y, connections: [] };
 
 
     nodes.push(newFamilyMember)
@@ -40,29 +37,9 @@ function renderNodes(nodes) {
 
     for (let i = 0; i < nodes.length; i++) {
 
-        const node = nodes[i]
-        
-        node.connections.forEach(targetNodeId => {
-            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-            const targetNode = nodes.find(n => n.id === targetNodeId)
-            if(!targetNode) return;
+        const node = nodes[i];
 
-            const x1 = node.x + 150 / 2
-            const y1 = node.y 
-            const x2 = targetNode.x + 150 / 2
-            console.log(node);
-            const y2 = targetNode.y + 90
 
-            path.setAttribute('d', `M${x1},${y1} L${x2},${y2}`);
-            
-
-            path.setAttribute('stroke', 'black');
-            path.setAttribute('fill', 'none');
-
-            svg.appendChild(path)
-        });
-
-        
 
         const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         rect.setAttribute('x', node.x);
@@ -92,12 +69,21 @@ function renderNodes(nodes) {
 
         });
 
-        rect.addEventListener('click', () => {
-            selectedNode = node;
-            renderNodes(nodes)
-        })
+        rect.addEventListener('click', (e) => {
+            e.stopPropagation(); 
 
-        if (node === selectedNode) {
+            if (selectedNodes.includes(node)) {
+                selectedNodes = selectedNodes.filter(n => n !== node);
+                
+            } else {
+                selectedNodes.push(node);
+                
+            }
+
+            renderNodes(nodes);
+        });
+
+        if (selectedNodes.includes(node)) {
             rect.setAttribute('stroke', 'black')
             rect.setAttribute('stroke-width', '2')
         }
@@ -130,14 +116,16 @@ addButton.addEventListener('click', () => {
     }
 });
 
+
+
 removeButton.addEventListener('click', () => {
-    if (selectedNode) {
-        const deletedNode = selectedNode;
-        nodes = nodes.filter(n => n.id !== deletedNode.id);
+    if (selectedNodes.length > 0) {
+        const toDeleteIDs = selectedNodes.map(n => n.id)
+        nodes = nodes.filter(n => !toDeleteIDs.includes(n.id));
         nodes.forEach(n => {
-            n.connections = n.connections.filter(id => id !==deletedNode.id);
+            n.connections = n.connections.filter(id => !toDeleteIDs.includes(id));
         })
-        selectedNode = null;
+        selectedNodes = [];
         renderNodes(nodes);
 
     }
