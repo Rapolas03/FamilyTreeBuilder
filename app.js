@@ -3,6 +3,7 @@ const personName = document.getElementById('person-name');
 const svg = document.getElementById('family-tree');
 const addButton = document.getElementById('add-person-btn');
 const removeButton = document.getElementById('remove-person-btn');
+const connectButton = document.getElementById('connect-btn');
 
 let nodes = [];
 let node_id = 0;
@@ -16,7 +17,7 @@ let offsetY = 0;
 
 
 let selectedNodes = [];
-
+let selectedParentNodes = [];
 
 
 
@@ -38,8 +39,6 @@ function renderNodes(nodes) {
     for (let i = 0; i < nodes.length; i++) {
 
         const node = nodes[i];
-
-
 
         const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         rect.setAttribute('x', node.x);
@@ -70,21 +69,39 @@ function renderNodes(nodes) {
         });
 
         rect.addEventListener('click', (e) => {
-            e.stopPropagation(); 
+            e.stopPropagation();
 
-            if (selectedNodes.includes(node)) {
-                selectedNodes = selectedNodes.filter(n => n !== node);
-                
-            } else {
-                selectedNodes.push(node);
-                
+            if (!e.ctrlKey) {
+                if (selectedNodes.includes(node)) {
+                    selectedNodes = selectedNodes.filter(n => n !== node);
+
+                } else {
+                    selectedNodes.push(node);
+
+                }
+            }
+
+
+            if (e.ctrlKey) {
+                if (selectedParentNodes.includes(node)) {
+                    selectedParentNodes = selectedParentNodes.filter(n => n !== node);
+
+                } else {
+                    selectedParentNodes.push(node);
+
+                }
             }
 
             renderNodes(nodes);
         });
 
         if (selectedNodes.includes(node)) {
-            rect.setAttribute('stroke', 'black')
+            rect.setAttribute('stroke', 'black');
+            rect.setAttribute('stroke-width', '2')
+        }
+
+        if (selectedParentNodes.includes(node)) {
+            rect.setAttribute('stroke', 'red');
             rect.setAttribute('stroke-width', '2')
         }
 
