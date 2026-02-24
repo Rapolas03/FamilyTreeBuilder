@@ -36,8 +36,8 @@ function createConnectionPath(child, parent) {
     const endX = parent.x + 75; // parent top center
     const endY = parent.y;
 
-    const midY = startY + 20; 
-    const midX = endX;         
+    const midY = startY + 20;
+    const midX = endX;
 
     const pathData = `M ${startX},${startY} 
                       V ${midY} 
@@ -75,7 +75,7 @@ function renderNodes(nodes) {
         rect.setAttribute('y', node.y);
         rect.setAttribute('width', '150');
         rect.setAttribute('height', '90');
-        rect.setAttribute('fill', '#666');
+        rect.setAttribute('fill', '#667eea');
         rect.setAttribute('rx', 15)
         rect.setAttribute('ry', 15)
         svg.appendChild(rect)
@@ -117,6 +117,9 @@ function renderNodes(nodes) {
                     selectedParentNodes = selectedParentNodes.filter(n => n !== node);
 
                 } else {
+                    if (selectedParentNodes.length >= 2) {
+                        return; 
+                    }
                     selectedParentNodes.push(node);
 
                 }
