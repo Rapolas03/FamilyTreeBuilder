@@ -4,24 +4,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FamilyTreeApp</title>
+    <title>Family Tree Builder</title>
     <link rel="stylesheet" href="./style.css">
 
 </head>
 
 <body>
-    <header>
-        <h2>Build your own family tree</h2>
-    </header>
+    <nav class="sidebar">
+        <div class="nav-header">
+            <h3>Family Tree</h3>
+        </div>
+        <ul class="nav-links">
+            <li><a href="home.html">Home</a></li>
+            <li><a href="index.html" class="active">Tree Builder</a></li>
+        </ul>
+    </nav>
 
+    <div class="main-content">
+        <header>
+            <h2>Build your own family tree</h2>
+        </header>
 
-    <input type="text" id="person-name" placeholder="Enter person's name">
+        <div class="instructions-panel">
+            <h3>Usage Instructions</h3>
+            <div class="instructions-content">
+                <div class="instruction-item">
+                    <strong>Add Person:</strong> Type a name and click "Add Person"
+                </div>
+                <div class="instruction-item">
+                    <strong>Select Children:</strong> Click on person(s) to select as children (green border)
+                </div>
+                <div class="instruction-item">
+                    <strong>Select Parents:</strong> Hold Ctrl + Click on 1-2 people to select as parents (gold border)
+                </div>
+                <div class="instruction-item">
+                    <strong>Connect:</strong> Click "Connect" to create relationships
+                </div>
+                <div class="instruction-item">
+                    <strong>Move Nodes:</strong> Drag any person to reposition them
+                </div>
+                <div class="instruction-item">
+                    <strong>Remove:</strong> Select person(s) and click "Remove Person"
+                </div>
+            </div>
+        </div>
 
-    <button id="add-person-btn">Add Person</button>
-    <button id="remove-person-btn">Remove Person</button>
+        <div class="controls">
+            <input type="text" id="person-name" placeholder="Enter person's name">
+            <button id="add-person-btn">Add Person</button>
+            <button id="remove-person-btn">Remove Person</button>
+            <button id="connect-btn">Connect</button>
+        </div>
 
-    <div class="canvas" id="canvas">
-        <svg id="family-tree" width="100%" height="1000"></svg>
+        <div class="canvas" id="canvas">
+            <svg id="family-tree" width="10000" height="10000"></svg>
+        </div>
     </div>
 
     <script src="app.js"></script>
